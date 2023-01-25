@@ -1,5 +1,5 @@
 # IXO-1
-Run a local instance of the IXO chain with a preconfigured genesis to make testing easier.
+![banner](banner.png)
 
 ## Requirements
 - make
