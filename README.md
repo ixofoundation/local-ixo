@@ -54,7 +54,7 @@ docker-compose -f docker-compose.yaml -f docker-compose.clean.yaml up -d
 - Chain_id  **ixo-1**
 - Voting period set to 5 mintues
 
-## Usable mneumonics
+## Usable mnemonics
 - validator
 ```ixo1gvrc2naj4ck956j4s87mfxv478zvuprhqy7rcv```
 ```
