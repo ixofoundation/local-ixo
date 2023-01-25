@@ -8,7 +8,7 @@
 
 ## How to use 
 
-clone repo and cd
+Clone repo and cd
 ```
 https://github.com/ixofoundation/local-ixo
 cd local-ixo
@@ -18,7 +18,7 @@ Start with
 ```
 make start
 ```
-or with logs
+Or with logs
 ```
 make startwl
 ```
