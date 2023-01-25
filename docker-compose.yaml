@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  ixod:
+    container_name: ixod
+    image: ghcr.io/ixofoundation/ixo-blockchain:debug
+    user: $UID:$GUID
+    command: start
+    ports:
+      - 26656:26656
+      - 26657:26657
+      - 1317:1317
+      - 9090:9090
+      - 26660:26660
+      - 9091:9091
+    volumes:
+      - ./config:/ixo/.ixod/config/
+      - ./data:/ixo/.ixod/data/

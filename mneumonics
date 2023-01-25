@@ -1,0 +1,49 @@
+{
+  "accounts": [
+    {
+      "name": "dev-main",
+      "address": "ixo1hstl4h4rnz6d20aemdt0rmpq0zu88c33y94zkj",
+      "pubkey": {
+        "@type": "/cosmos.crypto.secp256k1.PubKey",
+        "key": "AvNgUgQrAs09SLMkMAyA0fBnVH9zZaSZdjpBEvtlcc6s"
+      },
+      "mnemonic": "sunny vibrant divert liquid crouch relax galaxy pear stuff weapon victory crouch cattle near brown social cake off develop joy dust couple shine differ"
+    },
+    {
+      "name": "acc1",
+      "address": "ixo130d95u3cgknlpkuatu50gpr7tq028mwtt3ns4x",
+      "pubkey": {
+        "@type": "/cosmos.crypto.secp256k1.PubKey",
+        "key": "Axdqc+I7mfXpGagkz/PNXFC91uS0X1ZQMXYup6BHAFDi"
+      },
+      "mnemonic": "foster erupt gauge window best isolate lake young vibrant during spring put february fish ladder pact guard biology buffalo birth diagram gauge rival solid"
+    },
+    {
+      "name": "acc2",
+      "address": "ixo1xkwnm5kc63vfnr974g5rysxcu89g2kx9lw5942",
+      "pubkey": {
+        "@type": "/cosmos.crypto.secp256k1.PubKey",
+        "key": "AgPAIGpWt81cO3rrszg3LgAw69F9PRzP42ARSAF7Jbrd"
+      },
+      "mnemonic": "render clutch aspect drill buffalo habit field chief approve tenant oppose scissors multiply hover project device negative property curtain utility impose entry horn goddess"
+    },
+    {
+      "name": "acc3",
+      "address": "ixo14dz467czznhryc7mkzhcknx48v4dfnt5eupyyu",
+      "pubkey": {
+        "@type": "/cosmos.crypto.secp256k1.PubKey",
+        "key": "A3075IfdZ+lkI4IL3+kpf2h0AD6GgGRChBLM3EUilHQO"
+      },
+      "mnemonic": "unknown wife pepper detail bird drink slide flip talk drop umbrella pioneer define morning ripple hedgehog ankle inmate basic trouble forget note vacant smooth"
+    },
+    {
+      "name": "acc4",
+      "address": "ixo14rckcxrrtcqz9kzj4nrvghhwn49rukc0rfjavp",
+      "pubkey": {
+        "@type": "/cosmos.crypto.secp256k1.PubKey",
+        "key": "AjZnQK8q7nuFO2o95FXWAHQrUS2Ag//8ggPeGzympgb2"
+      },
+      "mnemonic": "jeans direct donkey capital differ source thunder exist inspire urge order trust aisle cabin rocket rescue patrol minimum such all camp night fold anger"
+    }
+  ]
+}
