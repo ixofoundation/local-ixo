@@ -1,4 +1,4 @@
-# IXO-1
+# IXO-Local
 ![banner](banner.png)
 
 ## Requirements
