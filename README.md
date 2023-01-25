@@ -8,6 +8,12 @@ Run a local instance of the IXO chain with a preconfigured genesis to make testi
 
 ## How to use 
 
+clone repo and cd
+```
+https://github.com/ixofoundation/local-ixo
+cd local-ixo
+```
+
 Start with
 ```
 make start
