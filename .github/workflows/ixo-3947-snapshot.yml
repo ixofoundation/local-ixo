@@ -23,6 +23,7 @@ jobs:
     timeout-minutes: 20
     env:
       ACTIVITY_BLOCKS: ${{ github.event.inputs.activity_blocks || '10000' }}
+      ACTIVITY_SAMPLE_BLOCKS: "500"
       MAX_TX_PAGES: "30"
       GOV_DETAIL_LIMIT: "10"
       HTTP_TIMEOUT: "12"
@@ -43,12 +44,14 @@ jobs:
         run: |
           set -euo pipefail
           bash -n research/ixo-3947/capture.sh
-          python3 -m py_compile research/ixo-3947/capture_ci.py research/ixo-3947/capture_ci_compat.py research/ixo-3947/derive.py research/ixo-3947/enrich.py
+          python3 -m py_compile research/ixo-3947/capture_ci.py research/ixo-3947/capture_ci_compat.py research/ixo-3947/supplement.py research/ixo-3947/derive.py research/ixo-3947/enrich.py
 
       - name: Capture fixed-height primary evidence
         run: |
           set -euo pipefail
           python3 research/ixo-3947/capture_ci_compat.py artifacts/ixo-3947
+          IXO_CAPTURE_ROOT=artifacts/ixo-3947 python3 research/ixo-3947/supplement.py
+          python3 research/ixo-3947/derive.py artifacts/ixo-3947
           python3 research/ixo-3947/enrich.py artifacts/ixo-3947
           (
             cd artifacts/ixo-3947
@@ -76,5 +79,6 @@ jobs:
           set -euo pipefail
           jq -e '.pass == true and .reproduction_grade == "R2"' artifacts/ixo-3947/derived/validation.json
           jq -e '.extended_checks.liquid_staking_pool_configuration_captured == true and .extended_checks.liquid_staking_live_state_captured == true' artifacts/ixo-3947/derived/validation.json
+          jq -e '.extended_checks.governance_proposals_captured == true and .extended_checks.activity_method_disclosed == true' artifacts/ixo-3947/derived/validation.json
           test -s artifacts/ixo-3947/hashes/sha256sums.txt
           test "$(jq '.providers | length' artifacts/ixo-3947/selected-block.json)" -ge 2
