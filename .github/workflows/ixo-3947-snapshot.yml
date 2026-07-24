@@ -1,0 +1,73 @@
+name: IXO-3947 fixed-height network snapshot
+
+on:
+  workflow_dispatch:
+    inputs:
+      activity_blocks:
+        description: Recent block window used for tx_search activity capture
+        required: false
+        default: "10000"
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/ixo-3947/**"
+      - ".github/workflows/ixo-3947-snapshot.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Capture and validate Impact Hub state
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      ACTIVITY_BLOCKS: ${{ github.event.inputs.activity_blocks || '10000' }}
+      MAX_TX_PAGES: "100"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Record toolchain
+        run: |
+          set -euo pipefail
+          bash --version | head -1
+          curl --version | head -1
+          jq --version
+          python3 --version
+          sha256sum --version | head -1
+
+      - name: Syntax and bytecode checks
+        run: |
+          set -euo pipefail
+          bash -n research/ixo-3947/capture.sh
+          python3 -m py_compile research/ixo-3947/derive.py
+
+      - name: Capture fixed-height primary evidence
+        run: |
+          set -euo pipefail
+          chmod +x research/ixo-3947/capture.sh
+          research/ixo-3947/capture.sh artifacts/ixo-3947
+
+      - name: Show derived summary
+        if: always()
+        run: |
+          test -f artifacts/ixo-3947/derived/summary.json && jq . artifacts/ixo-3947/derived/summary.json || true
+          test -f artifacts/ixo-3947/derived/validation.json && jq . artifacts/ixo-3947/derived/validation.json || true
+
+      - name: Upload immutable evidence package
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ixo-3947-fixed-height-snapshot-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/ixo-3947
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
+
+      - name: Enforce core evidence gates
+        run: |
+          set -euo pipefail
+          jq -e '.pass == true and .reproduction_grade == "R2"' artifacts/ixo-3947/derived/validation.json
+          test -s artifacts/ixo-3947/hashes/sha256sums.txt
+          test "$(jq '.providers | length' artifacts/ixo-3947/selected-block.json)" -ge 2
