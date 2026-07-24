@@ -20,10 +20,12 @@ jobs:
   capture:
     name: Capture and validate Impact Hub state
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
     env:
       ACTIVITY_BLOCKS: ${{ github.event.inputs.activity_blocks || '10000' }}
-      MAX_TX_PAGES: "100"
+      MAX_TX_PAGES: "30"
+      GOV_DETAIL_LIMIT: "10"
+      HTTP_TIMEOUT: "12"
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -41,13 +43,12 @@ jobs:
         run: |
           set -euo pipefail
           bash -n research/ixo-3947/capture.sh
-          python3 -m py_compile research/ixo-3947/derive.py
+          python3 -m py_compile research/ixo-3947/capture_ci.py research/ixo-3947/derive.py
 
       - name: Capture fixed-height primary evidence
         run: |
           set -euo pipefail
-          chmod +x research/ixo-3947/capture.sh
-          research/ixo-3947/capture.sh artifacts/ixo-3947
+          python3 research/ixo-3947/capture_ci.py artifacts/ixo-3947
 
       - name: Show derived summary
         if: always()
