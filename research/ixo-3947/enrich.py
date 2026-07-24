@@ -51,6 +51,7 @@ with (cleaned / "liquid_staking.csv").open("w", newline="", encoding="utf-8") as
     writer.writeheader()
     writer.writerows(rows)
 
+activity_method = load(derived / "activity-capture-method.json") or {}
 summary = load(derived / "summary.json") or {}
 summary["liquid_staking_pool_count"] = len(pools)
 summary["liquid_staking_state_count"] = len(rows)
@@ -63,6 +64,8 @@ summary["liquid_staking_pools"] = [
     }
     for pool in pools if isinstance(pool, dict)
 ]
+if activity_method:
+    summary["activity_capture_method"] = activity_method
 save(derived / "summary.json", summary)
 
 reconciliation = load(derived / "reconciliation.json") or {}
@@ -77,4 +80,9 @@ validation = load(derived / "validation.json") or {}
 checks = validation.setdefault("extended_checks", {})
 checks["liquid_staking_pool_configuration_captured"] = len(pools) > 0
 checks["liquid_staking_live_state_captured"] = len(rows) > 0
+checks["governance_proposals_captured"] = int(summary.get("governance_proposal_count") or 0) > 0
+activity = summary.get("activity") or {}
+checks["transaction_activity_captured"] = int(activity.get("transactions") or 0) >= 0 and bool(activity_method)
+checks["activity_method_disclosed"] = bool(activity_method.get("method"))
+validation["review_status"] = "owner-machine-validation-complete; independent researcher replay pending"
 save(derived / "validation.json", validation)
