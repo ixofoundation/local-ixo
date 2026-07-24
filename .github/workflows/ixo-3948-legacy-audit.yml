@@ -1,0 +1,76 @@
+name: IXO-3948 legacy distribution and rights audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      top_account_lookups:
+        description: Number of largest current balances receiving account-type lookup
+        required: false
+        default: "100"
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/ixo-3948/**"
+      - ".github/workflows/ixo-3948-legacy-audit.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Reconstruct genesis and current IXO distribution
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TOP_ACCOUNT_LOOKUPS: ${{ github.event.inputs.top_account_lookups || '100' }}
+      HTTP_TIMEOUT: "20"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Record toolchain
+        run: |
+          set -euo pipefail
+          python3 --version
+          sha256sum --version | head -1
+
+      - name: Syntax and bytecode checks
+        run: |
+          set -euo pipefail
+          python3 -m py_compile \
+            research/ixo-3948/common.py \
+            research/ixo-3948/genesis.py \
+            research/ixo-3948/current.py \
+            research/ixo-3948/analyze.py \
+            research/ixo-3948/run.py
+
+      - name: Run reproducible legacy audit
+        run: |
+          set -euo pipefail
+          python3 research/ixo-3948/run.py
+
+      - name: Show validation and key outputs
+        if: always()
+        run: |
+          test -f artifacts/ixo-3948/run-result.json && cat artifacts/ixo-3948/run-result.json || true
+          test -f artifacts/ixo-3948/derived/validation.json && jq . artifacts/ixo-3948/derived/validation.json || true
+          test -f artifacts/ixo-3948/derived/distribution-metrics.json && jq . artifacts/ixo-3948/derived/distribution-metrics.json || true
+
+      - name: Upload immutable audit package
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ixo-3948-legacy-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/ixo-3948
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
+
+      - name: Enforce evidence gates
+        run: |
+          set -euo pipefail
+          jq -e '.pass == true and .reproduction_grade == "R2"' artifacts/ixo-3948/derived/validation.json
+          jq -e '.checks.current_denom_owners_reconcile_to_bank_supply == true' artifacts/ixo-3948/derived/validation.json
+          jq -e '.checks.genesis_declared_supply_reconciles == true' artifacts/ixo-3948/derived/validation.json
+          jq -e '.checks.beneficial_control_not_inferred == true' artifacts/ixo-3948/derived/validation.json
+          test -s artifacts/ixo-3948/hashes/sha256sums.txt
