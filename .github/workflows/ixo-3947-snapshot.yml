@@ -43,12 +43,17 @@ jobs:
         run: |
           set -euo pipefail
           bash -n research/ixo-3947/capture.sh
-          python3 -m py_compile research/ixo-3947/capture_ci.py research/ixo-3947/capture_ci_compat.py research/ixo-3947/derive.py
+          python3 -m py_compile research/ixo-3947/capture_ci.py research/ixo-3947/capture_ci_compat.py research/ixo-3947/derive.py research/ixo-3947/enrich.py
 
       - name: Capture fixed-height primary evidence
         run: |
           set -euo pipefail
           python3 research/ixo-3947/capture_ci_compat.py artifacts/ixo-3947
+          python3 research/ixo-3947/enrich.py artifacts/ixo-3947
+          (
+            cd artifacts/ixo-3947
+            find . -type f ! -path './hashes/sha256sums.txt' -print0 | sort -z | xargs -0 sha256sum > hashes/sha256sums.txt
+          )
 
       - name: Show derived summary
         if: always()
@@ -70,5 +75,6 @@ jobs:
         run: |
           set -euo pipefail
           jq -e '.pass == true and .reproduction_grade == "R2"' artifacts/ixo-3947/derived/validation.json
+          jq -e '.extended_checks.liquid_staking_pool_configuration_captured == true and .extended_checks.liquid_staking_live_state_captured == true' artifacts/ixo-3947/derived/validation.json
           test -s artifacts/ixo-3947/hashes/sha256sums.txt
           test "$(jq '.providers | length' artifacts/ixo-3947/selected-block.json)" -ge 2
