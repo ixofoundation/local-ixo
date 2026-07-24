@@ -43,12 +43,12 @@ jobs:
         run: |
           set -euo pipefail
           bash -n research/ixo-3947/capture.sh
-          python3 -m py_compile research/ixo-3947/capture_ci.py research/ixo-3947/derive.py
+          python3 -m py_compile research/ixo-3947/capture_ci.py research/ixo-3947/capture_ci_compat.py research/ixo-3947/derive.py
 
       - name: Capture fixed-height primary evidence
         run: |
           set -euo pipefail
-          python3 research/ixo-3947/capture_ci.py artifacts/ixo-3947
+          python3 research/ixo-3947/capture_ci_compat.py artifacts/ixo-3947
 
       - name: Show derived summary
         if: always()
