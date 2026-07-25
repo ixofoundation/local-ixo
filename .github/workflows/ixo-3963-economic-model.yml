@@ -26,19 +26,18 @@ jobs:
           python3 --version
           sha256sum --version | head -1
 
-      - name: Verify and extract source bundle
-        run: |
-          set -euo pipefail
-          python3 research/ixo-3963/extract_source.py
-
       - name: Syntax and unit tests
         run: |
           set -euo pipefail
           python3 -m py_compile \
+            research/ixo-3963/economic_types.py \
+            research/ixo-3963/economic_metrics.py \
+            research/ixo-3963/economic_simulation.py \
+            research/ixo-3963/economic_validation.py \
+            research/ixo-3963/economic_run.py \
             research/ixo-3963/model.py \
             research/ixo-3963/test_model.py
-          python3 -m unittest -v \
-            research/ixo-3963/test_model.py
+          python3 -m unittest -v research/ixo-3963/test_model.py
 
       - name: Run reproducible economic model
         run: |
@@ -88,6 +87,7 @@ jobs:
           assert manifest["alternative_count"] == 4
           assert manifest["monthly_record_count"] == 2400
           assert manifest["monte_carlo_runs"] == 2000
+          assert manifest["irreversible_launch_authorized"] is False
           assert len(residuals) >= 10
           assert (root / "hashes/sha256sums.txt").stat().st_size > 0
           PY
