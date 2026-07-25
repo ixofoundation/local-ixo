@@ -27,26 +27,33 @@ residual decision.
 
 ## Files
 
-- `inputs.json` — all assumptions, scenarios, alternatives, gates and residual
-  decisions.
-- `source.part*.b64` — text-encoded parts of the compressed canonical Python source archive.
-- `source_manifest.json` — SHA-256 digest for every source file and the bundle.
-- `extract_source.py` — path-safe verifier/extractor used by CI and local runs.
-- extracted `economic_*.py`, `model.py` and `test_model.py` — model modules, CLI and tests.
+- `inputs.json` — all model assumptions, scenarios, alternatives, gates and
+  top-level residual decisions.
+- `economic_types.py` — shared constants and deterministic helpers.
+- `economic_metrics.py` — external revenue, security budget, effective stake,
+  M-NVaR, reserve-cap and liquidity equations.
+- `economic_simulation.py` — monthly alternative/scenario simulation.
+- `economic_validation.py` — invariants, evidence validation and hashing.
+- `economic_run.py` — scenario, sensitivity and Monte Carlo orchestration.
+- `model.py` — command-line entrypoint.
+- `test_model.py` — unit and invariant tests.
 - `.github/workflows/ixo-3963-economic-model.yml` — CI run and immutable
   evidence artifact.
+
+All model source is stored as ordinary reviewable Python. No generated or
+opaque source archive is required.
 
 ## Run locally
 
 ```bash
-python3 research/ixo-3963/extract_source.py
-
 python3 research/ixo-3963/model.py \
   --inputs research/ixo-3963/inputs.json \
   --output artifacts/ixo-3963
 
-python3 -m unittest -v \
-  research/ixo-3963/test_model.py
+(
+  cd research/ixo-3963
+  python3 -m unittest -v test_model.py
+)
 ```
 
 The implementation uses only the Python standard library.
@@ -174,7 +181,8 @@ The workflow artifact contains:
 - `outputs/residual_decisions.json`;
 - `outputs/validation.json`;
 - `outputs/model_manifest.json`;
-- the exact input file; and
+- the exact input file;
+- the exact reviewable source files used for the run; and
 - `hashes/sha256sums.txt`.
 
 The validation gate requires:
@@ -188,6 +196,13 @@ The validation gate requires:
 - deterministic seeded reproduction; and
 - irreversible launch remaining blocked while residual legal, custody,
   one-unit/one-claim and no-double-benefit gates are false.
+
+## Residual decisions
+
+The model input embeds the top-level irreversible decisions required to run a
+scenario. Linear contains the complete canonical `M3-RD` register, including
+more detailed supply, fee, assurance, security, liquid-staking and migration
+parameters. A model baseline is not an implicit decision or launch approval.
 
 ## Interpretation rule
 
