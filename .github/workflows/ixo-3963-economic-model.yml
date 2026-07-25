@@ -1,0 +1,93 @@
+name: IXO-3963 reproducible AGENT economic model
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/ixo-3963/**"
+      - ".github/workflows/ixo-3963-economic-model.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  economic-model:
+    name: Run scenarios, sensitivity and adversarial simulations
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Record toolchain
+        run: |
+          set -euo pipefail
+          python3 --version
+          sha256sum --version | head -1
+
+      - name: Verify and extract source bundle
+        run: |
+          set -euo pipefail
+          python3 research/ixo-3963/extract_source.py
+
+      - name: Syntax and unit tests
+        run: |
+          set -euo pipefail
+          python3 -m py_compile \
+            research/ixo-3963/model.py \
+            research/ixo-3963/test_model.py
+          python3 -m unittest -v \
+            research/ixo-3963/test_model.py
+
+      - name: Run reproducible economic model
+        run: |
+          set -euo pipefail
+          python3 research/ixo-3963/model.py \
+            --inputs research/ixo-3963/inputs.json \
+            --output artifacts/ixo-3963
+
+      - name: Show decision outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          test -f artifacts/ixo-3963/outputs/model_manifest.json && \
+            cat artifacts/ixo-3963/outputs/model_manifest.json || true
+          test -f artifacts/ixo-3963/outputs/validation.json && \
+            cat artifacts/ixo-3963/outputs/validation.json || true
+          test -f artifacts/ixo-3963/outputs/monte_carlo.json && \
+            cat artifacts/ixo-3963/outputs/monte_carlo.json || true
+          test -f artifacts/ixo-3963/outputs/scenario_summary.csv && \
+            head -n 12 artifacts/ixo-3963/outputs/scenario_summary.csv || true
+
+      - name: Upload immutable model package
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ixo-3963-economic-model-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/ixo-3963
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
+
+      - name: Enforce model gates
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("artifacts/ixo-3963")
+          validation = json.loads((root / "outputs/validation.json").read_text())
+          manifest = json.loads((root / "outputs/model_manifest.json").read_text())
+          residuals = json.loads((root / "outputs/residual_decisions.json").read_text())
+
+          assert validation["pass"] is True
+          assert validation["reproduction_grade"] == "R2"
+          assert manifest["scenario_count"] == 10
+          assert manifest["alternative_count"] == 4
+          assert manifest["monthly_record_count"] == 2400
+          assert manifest["monte_carlo_runs"] == 2000
+          assert len(residuals) >= 10
+          assert (root / "hashes/sha256sums.txt").stat().st_size > 0
+          PY

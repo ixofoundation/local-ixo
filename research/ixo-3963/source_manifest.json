@@ -1,0 +1,10 @@
+{
+  "bundle_sha256": "86d70cf84de49342901e14710ea7e4c11cc1a2af4a604361413a0b51bdb7b255",
+  "research/ixo-3963/economic_metrics.py": "7d69eca529ee16d07b073d884e9bc7848e65f1bd97dab36589e7592e39e6ef36",
+  "research/ixo-3963/economic_run.py": "f632f2751077a04c9c616cf7582df33a00494e01bef75be019f2ff64bf173cb3",
+  "research/ixo-3963/economic_simulation.py": "97437dd36b27e10678a969e09c77d036f2fae8dd010fc7dec8ad64a285cf9371",
+  "research/ixo-3963/economic_types.py": "a665a43a8db4b5e17b7e332d37675173ac1c03c11d056a785df456b2fcac2238",
+  "research/ixo-3963/economic_validation.py": "eb153e0329ffb826c91024e65428e058db216d5727a227ac8b2771153301b09b",
+  "research/ixo-3963/model.py": "7e2595a59b5ef76dfff09fdbfb41560fdf4768abb72e87ed6d9ae7fbb7f8485b",
+  "research/ixo-3963/test_model.py": "4829345708c73ceef686468b4a002427e01657f9fddd7167f2f6faed5e57e4ff"
+}

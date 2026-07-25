@@ -1,1 +1,383 @@
-PLACEHOLDER
+{
+  "alternatives": {
+    "native_agent": {
+      "implementation_cost_multiplier": 1.0,
+      "initial_capital_multiplier": 1.0,
+      "native_asset": true,
+      "protocol_fee_multiplier": 1.0,
+      "security_mode": "native",
+      "transition_cost": 2500000
+    },
+    "recapitalized_ixo": {
+      "implementation_cost_multiplier": 0.85,
+      "initial_capital_multiplier": 0.75,
+      "legacy_bonded_tokens": 63984125.397755,
+      "legacy_controllers_to_two_thirds": 4,
+      "legacy_current_supply": 182892836.341366,
+      "legacy_free_supply": 44187407.542357,
+      "legacy_largest_controller_share": 0.37990922,
+      "legacy_monthly_issuance_tokens": 882083.3333333334,
+      "legacy_price": 0.02,
+      "native_asset": true,
+      "protocol_fee_multiplier": 0.95,
+      "security_mode": "legacy_native",
+      "transition_cost": 1200000
+    },
+    "shared_security_agent": {
+      "implementation_cost_multiplier": 0.9,
+      "initial_capital_multiplier": 1.0,
+      "native_asset": true,
+      "protocol_fee_multiplier": 1.0,
+      "security_mode": "shared",
+      "shared_security_cost_multiplier": 1.0,
+      "transition_cost": 1800000
+    },
+    "tokenless_service": {
+      "implementation_cost_multiplier": 0.7,
+      "initial_capital_multiplier": 0.75,
+      "native_asset": false,
+      "protocol_fee_multiplier": 0.88,
+      "security_mode": "shared",
+      "shared_security_cost_multiplier": 1.0,
+      "transition_cost": 500000
+    }
+  },
+  "capital": {
+    "baseline_runway_months": 24,
+    "initial_external_stable_capital": 12000000,
+    "minimum_runway_months": 18,
+    "monthly_contingency_draw_cap": 100000,
+    "monthly_implementation_cost_first_18_months": 120000,
+    "monthly_protocol_operations_cost": 260000,
+    "proceeds_allocation": {
+      "assurance": 0.1,
+      "contingency": 0.05,
+      "implementation": 0.1,
+      "operations": 0.45,
+      "protocol_owned_liquidity_stable": 0.2,
+      "security_transition": 0.1
+    },
+    "stable_assurance_target": 1800000,
+    "stable_pol_target_months_of_fee_conversion": 6
+  },
+  "demand": {
+    "active_twins_per_domain": 20000,
+    "assurance_fee_allocation_fraction": 0.1,
+    "external_payer_share_monthly_improvement": 0.004,
+    "initial_active_external_domains": 3.0,
+    "initial_external_payer_share": 0.7,
+    "largest_domain_revenue_share": 0.35,
+    "maximum_external_payer_share": 0.95,
+    "minimum_launch_external_fee_coverage": 0.25,
+    "month_12_external_fee_coverage": 0.5,
+    "month_24_external_fee_coverage": 1.0,
+    "monthly_domain_churn_rate": 0.015,
+    "monthly_domain_growth_rate": 0.04,
+    "pol_fee_allocation_fraction": 0.1,
+    "protocol_fee_per_active_twin_month": 4.0,
+    "related_party_fee_fraction": 0.15,
+    "security_fee_allocation_fraction": 0.55,
+    "service_value_per_active_twin_month": 18.0,
+    "treasury_fee_allocation_fraction": 0.25
+  },
+  "governance": {
+    "controlled_unverified_nonvoting": true,
+    "maximum_verified_nonprotocol_immediate_voting_share": 0.1,
+    "treasury_pol_reserves_nonvoting": true
+  },
+  "liquidity": {
+    "contributor_sell_fraction": 0.1,
+    "illustrative_initial_price": 0.1,
+    "legacy_immediate_sell_fraction": 0.3,
+    "legacy_vested_sell_fraction": 0.12,
+    "lst_liquid_buffer_fraction": 0.075,
+    "lst_underlying_cap_fraction_of_bonded": 0.25,
+    "maximum_monthly_sell_pressure_to_stressed_depth": 0.25,
+    "monthly_executable_depth_at_5pct": 3000000,
+    "monthly_volume": 9000000,
+    "public_follow_on_sell_fraction": 0.08,
+    "security_release_sell_fraction": 0.65,
+    "strategic_sell_fraction": 0.08,
+    "stress_price_multiplier": 0.3,
+    "stressed_depth_multiplier": 0.35
+  },
+  "meta": {
+    "currency": "USD",
+    "horizon_months": 60,
+    "model_id": "AGWP-M3-ECON-1",
+    "monte_carlo_runs": 2000,
+    "random_seed": 3963,
+    "status": "illustrative decision-support model; parameters are assumptions or residual decisions, not forecasts",
+    "token_unit": "AGENT",
+    "version": "1.0.0"
+  },
+  "migration": {
+    "baseline_claim_rate": 0.65,
+    "custodian_reconciliation_gate": false,
+    "dispute_reserve_fraction_of_claim_pool": 0.05,
+    "legal_rights_gate": false,
+    "one_unit_one_claim_gate": false,
+    "related_party_no_double_benefit_gate": false
+  },
+  "residual_decisions": [
+    {
+      "blocks": [
+        "issuance",
+        "mainnet"
+      ],
+      "id": "M3-RD-001",
+      "owner": "M4 governance + programme authority",
+      "topic": "final AGENT maximum supply and denomination"
+    },
+    {
+      "blocks": [
+        "issuance"
+      ],
+      "id": "M3-RD-002",
+      "owner": "programme authority + independent economics review",
+      "topic": "final allocation bucket percentages"
+    },
+    {
+      "blocks": [
+        "auction"
+      ],
+      "id": "M3-RD-003",
+      "owner": "M4 legal + capital formation authority",
+      "topic": "public auction size, legal form, reserve price and jurisdiction"
+    },
+    {
+      "blocks": [
+        "launch"
+      ],
+      "id": "M3-RD-004",
+      "owner": "board/treasury authority",
+      "topic": "minimum stable capital raise and runway amount"
+    },
+    {
+      "blocks": [
+        "liquidity activation"
+      ],
+      "id": "M3-RD-005",
+      "owner": "treasury governance + market infrastructure",
+      "topic": "POL venues, assets, market makers and mandates"
+    },
+    {
+      "blocks": [
+        "claim root",
+        "migration"
+      ],
+      "id": "M3-RD-006",
+      "owner": "transition authority after IXO-4003/4004",
+      "topic": "legacy claim pool and admitted denominator"
+    },
+    {
+      "blocks": [
+        "claim release"
+      ],
+      "id": "M3-RD-007",
+      "owner": "transition governance + legal review",
+      "topic": "claim immediate/vesting tranches and voting treatment"
+    },
+    {
+      "blocks": [
+        "fee activation"
+      ],
+      "id": "M3-RD-008",
+      "owner": "protocol governance + risk",
+      "topic": "Fee Router accepted assets, oracle and slippage limits"
+    },
+    {
+      "blocks": [
+        "production fees"
+      ],
+      "id": "M3-RD-009",
+      "owner": "protocol governance + domain pilots",
+      "topic": "ASF, VaR, assurance and allocation parameters"
+    },
+    {
+      "blocks": [
+        "native security"
+      ],
+      "id": "M3-RD-010",
+      "owner": "validator survey + M4 security/governance",
+      "topic": "validator cost baseline, target budget and reserve schedule"
+    },
+    {
+      "blocks": [
+        "native security"
+      ],
+      "id": "M3-RD-011",
+      "owner": "M4 security + indepent review",
+      "topic": "effective security haircuts, M-NVaR and exposure caps"
+    },
+    {
+      "blocks": [
+        "liquid staking"
+      ],
+      "id": "M3-RD-012",
+      "owner": "protocol governance + audit",
+      "topic": "stAGENT cap, buffer, unbonding and collateral treatment"
+    },
+    {
+      "blocks": [
+        "sovereign launch"
+      ],
+      "id": "M3-RD-013",
+      "owner": "programme authority after launch gates",
+      "topic": "native versus shared security final stage"
+    }
+  ],
+  "scenarios": {
+    "base": {},
+    "concentrated_selloff": {
+      "claim_rate": 0.85,
+      "controllers_to_two_thirds": 5,
+      "depth_multiplier": 0.2,
+      "largest_controller_share": 0.29,
+      "price_multiplier": 0.4,
+      "sell_fraction_multiplier": 3.0
+    },
+    "conservative": {
+      "claim_rate": 0.55,
+      "depth_multiplier": 0.6,
+      "initial_external_capital_multiplier": 0.75,
+      "largest_domain_revenue_share": 0.45,
+      "monthly_domain_churn_rate": 0.025,
+      "monthly_domain_growth_rate": 0.018,
+      "price_multiplier": 0.75,
+      "protocol_fee_multiplier": 0.8,
+      "validator_cost_multiplier": 1.15
+    },
+    "domain_churn": {
+      "largest_domain_revenue_share": 0.65,
+      "monthly_domain_churn_rate": 0.06,
+      "monthly_domain_growth_rate": 0.025,
+      "protocol_fee_multiplier": 0.75
+    },
+    "failure": {
+      "claim_rate": 0.4,
+      "controllers_to_two_thirds": 4,
+      "depth_multiplier": 0.25,
+      "initial_external_capital_multiplier": 0.45,
+      "largest_controller_share": 0.38,
+      "largest_domain_revenue_share": 0.7,
+      "monthly_domain_churn_rate": 0.04,
+      "monthly_domain_growth_rate": -0.005,
+      "price_multiplier": 0.35,
+      "protocol_fee_multiplier": 0.55,
+      "validator_cost_multiplier": 1.5
+    },
+    "governance_capture": {
+      "controllers_to_two_thirds": 3,
+      "depth_multiplier": 0.55,
+      "independent_controller_count": 12,
+      "largest_controller_share": 0.42,
+      "price_multiplier": 0.6
+    },
+    "liquidity_shock": {
+      "claim_rate": 0.7,
+      "depth_multiplier": 0.15,
+      "monthly_domain_growth_rate": 0.035,
+      "price_multiplier": 0.3,
+      "protocol_fee_multiplier": 0.95,
+      "sell_fraction_multiplier": 2.2
+    },
+    "low_fee_conversion": {
+      "depth_multiplier": 0.4,
+      "fee_conversion_slippage_fraction": 0.18,
+      "price_multiplier": 0.65,
+      "protocol_fee_multiplier": 0.55
+    },
+    "rapid_growth": {
+      "claim_rate": 0.8,
+      "depth_multiplier": 1.4,
+      "initial_external_capital_multiplier": 1.35,
+      "largest_domain_revenue_share": 0.3,
+      "monthly_domain_churn_rate": 0.01,
+      "monthly_domain_growth_rate": 0.07,
+      "open_exposure_multiplier": 1.4,
+      "price_multiplier": 1.0,
+      "protocol_fee_multiplier": 1.15,
+      "validator_cost_multiplier": 1.2
+    },
+    "validator_exit": {
+      "controllers_to_two_thirds": 4,
+      "depth_multiplier": 0.5,
+      "independent_controller_count": 13,
+      "largest_controller_share": 0.34,
+      "price_multiplier": 0.55,
+      "validator_cost_multiplier": 1.35,
+      "validator_count": 15
+    }
+  },
+  "security": {
+    "bonded_fraction_of_transferable_supply": 0.55,
+    "bridge_custody_mnvar": 400000,
+    "controllers_to_two_thirds": 7,
+    "decentralisation_premium_fraction": 0.1,
+    "effective_security_haircuts": {
+      "control_confidence": 0.9,
+      "controller": 0.82,
+      "infrastructure_correlation": 0.85,
+      "liquidity": 0.75,
+      "lock_finality": 0.85,
+      "slashability": 0.9
+    },
+    "independent_controller_count": 22,
+    "initial_open_critical_exposure_per_domain": 90000,
+    "largest_controller_share": 0.15,
+    "maximum_largest_controller_share": 0.3333333333,
+    "minimum_controllers_to_two_thirds": 5,
+    "minimum_effective_security_to_mnvar_ratio": 3.0,
+    "minimum_independent_controllers": 20,
+    "monthly_audit_upgrade_incident_cost": 55000,
+    "monthly_common_infrastructure_cost": 45000,
+    "monthly_cost_per_validator": 9000,
+    "native_activation_month": 24,
+    "reserve_price_haircut_fraction": 0.6,
+    "security_release_pause_if_depth_below_usd": 150000,
+    "shared_infrastructure_mnvar": 650000,
+    "shared_security_monthly_cost": 220000,
+    "shared_security_provider_concentration_pass": true,
+    "validator_count": 25,
+    "validator_margin_fraction": 0.25
+  },
+  "supply": {
+    "adoption_monthly_cap": 3000000,
+    "adoption_release_per_new_external_domain": 750000,
+    "allocation": {
+      "adoption_reserve": 120000000,
+      "contributors": 70000000,
+      "legacy_claims": 200000000,
+      "protocol_owned_liquidity": 100000000,
+      "public_capital": 200000000,
+      "security_reserve": 200000000,
+      "strategic_domains": 30000000,
+      "treasury": 80000000
+    },
+    "contributor_cliff_months": 12,
+    "contributor_vesting_months": 36,
+    "launch_pol": 100000000,
+    "launch_public": 150000000,
+    "legacy_claim_start_month": 1,
+    "legacy_immediate_fraction": 0.25,
+    "legacy_vesting_months": 30,
+    "max_nonpublic_unlock_fraction_of_stressed_monthly_depth": 0.2,
+    "maximum": 1000000000,
+    "public_follow_on_months": 12,
+    "public_follow_on_start_month": 7,
+    "security_reserve_annual_caps_fraction_of_max": [
+      0.025,
+      0.02,
+      0.015,
+      0.01,
+      0.0075,
+      0.005,
+      0.0025,
+      0.0025
+    ],
+    "strategic_cliff_months": 12,
+    "strategic_vesting_months": 36,
+    "treasury_release_monthly_cap": 1000000
+  }
+}
