@@ -29,7 +29,7 @@ residual decision.
 
 - `inputs.json` — all assumptions, scenarios, alternatives, gates and residual
   decisions.
-- `source.tar.gz` — compressed canonical Python source archive.
+- `source.part*.b64` — text-encoded parts of the compressed canonical Python source archive.
 - `source_manifest.json` — SHA-256 digest for every source file and the bundle.
 - `extract_source.py` — path-safe verifier/extractor used by CI and local runs.
 - extracted `economic_*.py`, `model.py` and `test_model.py` — model modules, CLI and tests.
