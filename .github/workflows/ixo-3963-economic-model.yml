@@ -37,7 +37,8 @@ jobs:
             research/ixo-3963/economic_run.py \
             research/ixo-3963/model.py \
             research/ixo-3963/test_model.py
-          python3 -m unittest -v research/ixo-3963/test_model.py
+          PYTHONPATH=research/ixo-3963 \
+            python3 -m unittest -v research/ixo-3963/test_model.py
 
       - name: Run reproducible economic model
         run: |
